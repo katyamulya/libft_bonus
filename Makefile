@@ -6,7 +6,7 @@
 #    By: kdvarako <kdvarako@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 17:31:46 by kdvarako          #+#    #+#              #
-#    Updated: 2024/03/18 17:43:14 by kdvarako         ###   ########.fr        #
+#    Updated: 2024/03/26 15:44:25 by kdvarako         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,13 @@ SRC = ft_isprint.c ft_putendl_fd.c ft_strlcat.c ft_substr.c \
 		ft_isascii.c ft_memset.c ft_striteri.c ft_strrchr.c \
 		ft_isdigit.c ft_putchar_fd.c ft_strjoin.c ft_strtrim.c
 
-OBJ = ${SRC:%.c=%.o}
+SRC_BONUS = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
+			ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c \
+			ft_lstmap.c
+
+OBJ = ${SRC:.c=.o}
+
+OBJ_BONUS = ${SRC_BONUS:.c=.o}
 
 CC = cc
 
@@ -34,19 +40,26 @@ HEADER = libft.h
 
 all:	${NAME}
 
-%.o: %.c 	${HEADER}
-	${CC} ${CFlAGS} -c $< -o $@
+${OBJ}: ${SRC}
+	${CC} ${CFlAGS} -c ${SRC}
+
+${OBJ_BONUS}: ${SRC_BONUS}
+	${CC} ${CFlAGS} -c ${SRC_BONUS}
 
 ${NAME}:	${OBJ}
 	${AR} ${NAME} ${OBJ}
 	ranlib ${NAME}
 
+bonus: ${OBJ} ${OBJ_BONUS}
+	${AR} ${NAME} ${OBJ} ${OBJ_BONUS}
+	ranlib ${NAME}
+
 clean:
-	rm -f ${OBJ}
+	rm -f ${OBJ} ${OBJ_BONUS}
 
 fclean:	clean
 	rm -f ${NAME}
 
 re:	fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re
