@@ -6,13 +6,33 @@
 /*   By: kdvarako <kdvarako@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 11:06:01 by kdvarako          #+#    #+#             */
-/*   Updated: 2024/03/25 12:19:40 by kdvarako         ###   ########.fr       */
+/*   Updated: 2024/03/27 11:36:29 by kdvarako         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_rowscount(char const *s, char c)
+static int	ft_rowscount(char const *s, char c);
+static char	*ft_strndup(const char *str, size_t n);
+static void	ft_freeall(char **p, int k);
+static char	**ft_elements(char **p, const char *s, char c, int rows);
+
+char	**ft_split(char const *s, char c)
+{
+	int		rows;
+	char	**p;
+
+	rows = ft_rowscount(s, c);
+	p = (char **)malloc((rows + 1) * sizeof(char *));
+	if (!p)
+		return (NULL);
+	p = ft_elements(p, s, c, rows);
+	if (!p)
+		return (NULL);
+	return (p);
+}
+
+static int	ft_rowscount(char const *s, char c)
 {
 	unsigned int	i;
 	int				count;
@@ -31,7 +51,7 @@ int	ft_rowscount(char const *s, char c)
 	return (count);
 }
 
-char	*ft_strndup(const char *str, size_t n)
+static char	*ft_strndup(const char *str, size_t n)
 {
 	unsigned int	i;
 	char			*ptr;
@@ -49,18 +69,25 @@ char	*ft_strndup(const char *str, size_t n)
 	return (ptr);
 }
 
-char	**ft_split(char const *s, char c)
+static void	ft_freeall(char **p, int k)
 {
-	int		rows;
+	int	i;
+
+	i = 0;
+	while (i < k)
+	{
+		free(p[i]);
+		i++;
+	}
+	free(p);
+}
+
+static char	**ft_elements(char **p, const char *s, char c, int rows)
+{
 	int		k;
 	int		i;
 	int		j;
-	char	**p;
 
-	rows = ft_rowscount(s, c);
-	p = (char **)malloc((rows + 1) * sizeof(char *));
-	if (!p)
-		return (NULL);
 	k = 0;
 	i = 0;
 	j = 0;
@@ -72,6 +99,11 @@ char	**ft_split(char const *s, char c)
 		while (s[i] != c && s[i] != '\0')
 			i++;
 		p[k] = ft_strndup((s + j), (i - j));
+		if (!p[k])
+		{
+			ft_freeall(p, k);
+			return (NULL);
+		}
 		k++;
 	}
 	p[k] = NULL;
