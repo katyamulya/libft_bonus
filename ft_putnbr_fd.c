@@ -6,27 +6,13 @@
 /*   By: kdvarako <kdvarako@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 15:28:37 by kdvarako          #+#    #+#             */
-/*   Updated: 2024/03/25 12:17:02 by kdvarako         ###   ########.fr       */
+/*   Updated: 2024/03/27 11:54:55 by kdvarako         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putposnum(long n, int fd)
-{
-	long	i;
-
-	i = 1;
-	while (n / i > 0)
-		i = i * 10;
-	i = i / 10;
-	while (i > 0)
-	{
-		ft_putchar_fd((n / i + '0'), fd);
-		n = n - n / i * i;
-		i = i / 10;
-	}
-}
+static void	ft_putposnum(long n, int fd);
 
 void	ft_putnbr_fd(int n, int fd)
 {
@@ -43,5 +29,21 @@ void	ft_putnbr_fd(int n, int fd)
 			l = -l;
 		}
 		ft_putposnum(l, fd);
+	}
+}
+
+static void	ft_putposnum(long n, int fd)
+{
+	long	i;
+
+	i = 1;
+	while (n / i > 0)
+		i = i * 10;
+	i = i / 10;
+	while (i > 0)
+	{
+		ft_putchar_fd((n / i + '0'), fd);
+		n = n - n / i * i;
+		i = i / 10;
 	}
 }
