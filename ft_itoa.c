@@ -6,13 +6,32 @@
 /*   By: kdvarako <kdvarako@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 11:54:25 by kdvarako          #+#    #+#             */
-/*   Updated: 2024/03/25 12:07:31 by kdvarako         ###   ########.fr       */
+/*   Updated: 2024/03/27 11:52:54 by kdvarako         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long	ft_numberscount(long n)
+static long	ft_numberscount(long n);
+static long	ft_ten(long num);
+static char	*ft_createstr(long l, long count, char *str);
+
+char	*ft_itoa(int n)
+{
+	long	count;
+	char	*str;
+	long	l;
+
+	l = n;
+	count = ft_numberscount(l);
+	str = (char *)malloc(count + 1);
+	if (!str)
+		return (NULL);
+	str = ft_createstr(l, count, str);
+	return (str);
+}
+
+static long	ft_numberscount(long n)
 {
 	long	count;
 
@@ -32,7 +51,7 @@ long	ft_numberscount(long n)
 	return (count);
 }
 
-long	ft_ten(long num)
+static long	ft_ten(long num)
 {
 	long	i;
 
@@ -46,7 +65,7 @@ long	ft_ten(long num)
 	return (i);
 }
 
-char	*ft_createstr(long l, long count, char *str)
+static char	*ft_createstr(long l, long count, char *str)
 {
 	int	i;
 
@@ -66,20 +85,5 @@ char	*ft_createstr(long l, long count, char *str)
 		i++;
 	}
 	str[i] = '\0';
-	return (str);
-}
-
-char	*ft_itoa(int n)
-{
-	long	count;
-	char	*str;
-	long	l;
-
-	l = n;
-	count = ft_numberscount(l);
-	str = (char *)malloc(count + 1);
-	if (!str)
-		return (NULL);
-	str = ft_createstr(l, count, str);
 	return (str);
 }
